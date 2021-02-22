@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -42,9 +42,21 @@ public class GameManager : MonoBehaviour
         Player2Text.GetComponent<TextMeshProUGUI>().text = player2Score.ToString();
         ResetPosition();
     }
+
     // Update is called once per frame
     void Update()
     {
+        if (player1Score >= 5)
+        {
+            Player1Text.GetComponent<TextMeshProUGUI>().text = "Win";
+            Player2Text.GetComponent<TextMeshProUGUI>().text = "Lose";
+        }
+        else if (player2Score >= 5)
+        {
+            Player1Text.GetComponent<TextMeshProUGUI>().text = "Lose";
+            Player2Text.GetComponent<TextMeshProUGUI>().text = "Win";
+        }
+
         if (Input.GetKey("escape"))
         {
            Application.Quit();
