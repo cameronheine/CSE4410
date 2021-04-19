@@ -9,6 +9,13 @@ public class PlayerController2D : MonoBehaviour
     SpriteRenderer spriteRenderer;
     bool isGrounded;
 
+    public float maxHp;
+    float hp;
+    float iframes;
+
+    /*[SerializeField]
+    GameObject attackHitBox;*/
+
     [SerializeField]
     Transform GroundCheck;
 
@@ -32,22 +39,28 @@ public class PlayerController2D : MonoBehaviour
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        //attackHitBox.SetActive(false);
     }
  
     void Update()
     {
-        if(Input.GetButtonDown("Fire1") && !isAttacking)
+        if (iframes > 0) iframes -= Time.deltaTime;
+        /*if(Input.GetButtonDown("Fire1") && !isAttacking)
         {
             isAttacking = true;
             animator.Play("GhostRider_Attack_Right");
+            StartCoroutine(DoAttack()); 
+        }*/
+    }
 
-            Invoke("ResetAttack", .9f);
-        }
-    }
-    void ResetAttack()
+    /*IEnumerator DoAttack()
     {
+        attackHitBox.SetActive(true);
+        yield return new WaitForSeconds(.9f);
+        attackHitBox.SetActive(false);
         isAttacking = false;
-    }
+    }*/
+
     private void FixedUpdate()
     {
         if ((Physics2D.Linecast(transform.position, GroundCheck.position, 1 << LayerMask.NameToLayer("Ground"))) ||
@@ -59,7 +72,10 @@ public class PlayerController2D : MonoBehaviour
         else
         {
             isGrounded = false;
-            animator.Play("GhostRider_Jump(LtR)");
+            if(!isAttacking)
+            {
+              animator.Play("GhostRider_Jump(LtR)");
+            } 
         }
 
         if (Input.GetKey("d") || Input.GetKey("right"))
@@ -93,4 +109,26 @@ public class PlayerController2D : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
         }
     }
+
+    private void OnEnable()
+    {
+        hp = maxHp;
+    }
+
+    public void Damage(float aat)
+    {
+        if(iframes <= 0)
+        {
+          hp -= aat;
+          if (hp <= 0) Die();
+
+            iframes = 0.3f;
+        }
+        
+    }
+    public void Die()
+    {
+        gameObject.SetActive(false);
+    }
+
 }
