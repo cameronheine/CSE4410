@@ -18,5 +18,3 @@ public class HealthBar : MonoBehaviour
       
     }
 }
-//He
-alth Bar needs to be attached to main camera
