@@ -13,8 +13,7 @@ public class PlayerController2D : MonoBehaviour
     float hp;
     float iframes;
 
-    /*[SerializeField]
-    GameObject attackHitBox;*/
+    public HealthBar healthBar;
 
     [SerializeField]
     Transform GroundCheck;
@@ -39,27 +38,26 @@ public class PlayerController2D : MonoBehaviour
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        //attackHitBox.SetActive(false);
+        hp = maxHp;
+        healthBar.SetSize(maxHp);
     }
  
     void Update()
     {
         if (iframes > 0) iframes -= Time.deltaTime;
-        /*if(Input.GetButtonDown("Fire1") && !isAttacking)
+        if(Input.GetButtonDown("Fire1") && !isAttacking)
         {
             isAttacking = true;
             animator.Play("GhostRider_Attack_Right");
             StartCoroutine(DoAttack()); 
-        }*/
+        }
     }
 
-    /*IEnumerator DoAttack()
+    IEnumerator DoAttack()
     {
-        attackHitBox.SetActive(true);
-        yield return new WaitForSeconds(.9f);
-        attackHitBox.SetActive(false);
+        yield return new WaitForSeconds(.8f);
         isAttacking = false;
-    }*/
+    }
 
     private void FixedUpdate()
     {
@@ -120,6 +118,7 @@ public class PlayerController2D : MonoBehaviour
         if(iframes <= 0)
         {
           hp -= aat;
+            healthBar.SetSize(hp);
           if (hp <= 0) Die();
 
             iframes = 0.3f;
@@ -130,5 +129,4 @@ public class PlayerController2D : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
-
 }
