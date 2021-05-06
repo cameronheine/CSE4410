@@ -125,8 +125,9 @@ public class PlayerController2D : MonoBehaviour
         }
         
     }
-    public void Die()
+     public void Die()
     {
         gameObject.SetActive(false);
+        SceneManager.LoadScene("GhostRiderTheFirstGO");
     }
 }
